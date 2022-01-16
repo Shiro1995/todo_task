@@ -1,14 +1,17 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:todo_task/models/task_model.dart';
 
 const String DB_NAME = "task_database.db";
 const String TABLE_TASK = "task";
 
 class DatabaseProvider {
+  static final DatabaseProvider databaseProvider = DatabaseProvider._();
+  Database? _database;
 
-  Future<Database> _initDatabase() async {
+  DatabaseProvider._();
+
+  Future<Database> get database async {
     return await openDatabase(
       join(await getDatabasesPath(), DB_NAME),
       version: 1,
@@ -23,40 +26,40 @@ class DatabaseProvider {
     );
   }
 
+  Future close() {
+    return _database!.close();
+  }
+
   //delete the database
   Future deleteDB() async {
     return deleteDatabase(join(await getDatabasesPath(), DB_NAME));
   }
 
-  Future<int> addTask(TaskModel task) async {
-    final db = await _initDatabase();
-    return db.insert(TABLE_TASK, task.toMap(),
+  Future<bool> addTask(TaskModel task) async {
+    final db = await database;
+    final result = await db.insert(TABLE_TASK, task.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-  }
-
-  Future<bool> checkExist(TaskModel task) async {
-    final db = await _initDatabase();
-    List<Map<String, dynamic>> maps =
-        await db.query(TABLE_TASK, where: "id = ?", whereArgs: [task.id]);
-    return maps.isNotEmpty;
+    return result >= 0;
   }
 
   Future<List<TaskModel>> getAllTasks() async {
-    print('get all hello');
-    final db = await _initDatabase();
+    final db = await database;
     List<Map<String, dynamic>> maps = await db.query(TABLE_TASK);
-    return maps.map((e) => TaskModel.formJson(e)).toList();
+    if (maps.isEmpty) return [];
+    List<TaskModel> result = maps.map((e) => TaskModel.formJson(e)).toList();
+    result.sort((a, b) => a.status!.compareTo(b.status!));
+    return result;
   }
 
-  Future<bool> deleteAllTasks(TaskModel task) async {
-    final db = await _initDatabase();
+  Future<bool> deleteAllTasks() async {
+    final db = await database;
     final result =
-        await db.delete(TABLE_TASK, where: "id = ?", whereArgs: [task.id]);
+        await db.delete(TABLE_TASK);
     return result >= 0;
   }
 
   Future<bool> updateTask(TaskModel task) async {
-    final db = await _initDatabase();
+    final db = await database;
     final result = await db.update(TABLE_TASK, task.toMap(),
         where: "id = ?", whereArgs: [task.id]);
     return result >= 0;

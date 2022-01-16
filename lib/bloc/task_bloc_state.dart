@@ -5,17 +5,28 @@ enum LoadingStatus { initial, loaded, failure }
 class TaskState extends Equatable {
   const TaskState({
     this.listTasks,
-    this.status = LoadingStatus.initial,
+    this.statusLoading = LoadingStatus.initial,
+    this.errorMessage,
+    this.status,
   });
 
   final List<TaskModel>? listTasks;
-  final LoadingStatus? status;
+  final LoadingStatus? statusLoading;
+  final String? errorMessage;
+  final int? status;
 
-  TaskState copyWith({LoadingStatus? status, List<TaskModel>? listTasks}) =>
+  TaskState copyWith(
+          {LoadingStatus? statusLoading,
+          List<TaskModel>? listTasks,
+          String? errorMessage,
+          int? status}) =>
       TaskState(
-          status: status ?? this.status,
-          listTasks: listTasks ?? this.listTasks);
+          statusLoading: statusLoading ?? this.statusLoading,
+          listTasks: listTasks ?? this.listTasks,
+          errorMessage: errorMessage ?? this.errorMessage,
+          status: status ?? this.status
+          );
 
   @override
-  List<Object?> get props => [listTasks, status];
+  List<Object?> get props => [statusLoading, status, listTasks, statusLoading];
 }

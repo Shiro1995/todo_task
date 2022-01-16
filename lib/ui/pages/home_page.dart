@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_task/bloc/task_bloc_bloc.dart';
 import 'package:todo_task/models/task_model.dart';
-import 'package:todo_task/ui/pages/all_task_page.dart';
+import 'package:todo_task/ui/widgets/list_task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,25 +12,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _listTask = [AllTasksPage(), Text('2'), Text('3')];
-
-  late int _selectedIndex = 0;
+  int _selectedIndex = 0;
+  List<int> listStatus = [2, 1, 0];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Todo App',
-            textAlign: TextAlign.center,
-          ),
+        centerTitle: true,
+        title: Text(
+          'Todo App',
+          textAlign: TextAlign.center,
         ),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              BlocProvider.of<TaskBloc>(context).add(DeleteAllTasks());
+            },
+            icon: const Icon(
+              Icons.save_outlined,
+            ),
+            label: Text(
+              'Clear Data',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
-      body: _listTask[_selectedIndex],
+      body: ListTasks(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
-          
+          BlocProvider.of<TaskBloc>(context).add(IsLoading()),
+          onAddPress(context)
         },
         label: Text(
           'Add Task',
@@ -61,7 +78,9 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) => {
           setState(() {
             _selectedIndex = index;
-          })
+          }),
+          BlocProvider.of<TaskBloc>(context)
+              .add(ChangeStatus(listStatus[index])),
         },
         currentIndex: _selectedIndex,
         unselectedItemColor: Colors.white54,
@@ -70,4 +89,15 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+void onAddPress(BuildContext context) async {
+  //Set data to model
+  TaskModel taskModel = TaskModel(
+    title: 'title',
+    description: 'description222',
+    status: 0,
+  );
+
+  BlocProvider.of<TaskBloc>(context).add(AddTask(taskModel));
 }

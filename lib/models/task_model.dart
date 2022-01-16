@@ -10,6 +10,20 @@ class TaskModel extends Equatable {
 
   TaskModel({this.id, this.title, this.description, this.status});
 
+  TaskModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    int? status,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      status: status ?? this.status,
+    );
+  }
+
   @override
   List<Object?> get props => [id, title, description, status];
 

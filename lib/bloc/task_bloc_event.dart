@@ -11,14 +11,28 @@ class GetAllTask extends TaskEvent {
   List<TaskModel?> get props => [];
 }
 
-
-class GetTaskByStatus extends TaskEvent {
+class ChangeStatus extends TaskEvent {
+  const ChangeStatus(this.status);
   final int status;
-  const GetTaskByStatus(this.status);
+  @override
+  List<TaskModel?> get props => [];
+}
+
+class UpdateTask extends TaskEvent {
+  final TaskModel task;
+  const UpdateTask(this.task);
 
   @override
-  List<Object> get props => [status];
+  List<TaskModel> get props => [task];
 }
+
+class IsLoading extends TaskEvent {
+  const IsLoading();
+
+  @override
+  List<TaskModel> get props => [];
+}
+
 
 class AddTask extends TaskEvent {
   final TaskModel task;
@@ -28,13 +42,6 @@ class AddTask extends TaskEvent {
   List<TaskModel> get props => [task];
 }
 
-class UpdateTask extends TaskEvent {
-  final TaskModel model;
-  const UpdateTask(this.model);
-
-  @override
-  List<TaskModel> get props => [model];
-}
 
 class DeleteAllTasks extends TaskEvent {
   const DeleteAllTasks();

@@ -2,8 +2,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_task/models/task_model.dart';
 
-const String DB_NAME = "task_database.db";
-const String TABLE_TASK = "task";
+const String dbName = "task_database.db";
+const String tableTask = "task";
 
 class DatabaseProvider {
   static final DatabaseProvider databaseProvider = DatabaseProvider._();
@@ -13,10 +13,10 @@ class DatabaseProvider {
 
   Future<Database> get database async {
     return await openDatabase(
-      join(await getDatabasesPath(), DB_NAME),
+      join(await getDatabasesPath(), dbName),
       version: 1,
       onCreate: (db, version) {
-        return db.execute("""CREATE TABLE $TABLE_TASK (
+        return db.execute("""CREATE TABLE $tableTask (
             id INTEGER PRIMARY KEY,
             title TEXT,
             description TEXT,
@@ -32,19 +32,19 @@ class DatabaseProvider {
 
   //delete the database
   Future deleteDB() async {
-    return deleteDatabase(join(await getDatabasesPath(), DB_NAME));
+    return deleteDatabase(join(await getDatabasesPath(), dbName));
   }
 
   Future<bool> addTask(TaskModel task) async {
     final db = await database;
-    final result = await db.insert(TABLE_TASK, task.toMap(),
+    final result = await db.insert(tableTask, task.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
     return result >= 0;
   }
 
   Future<List<TaskModel>> getAllTasks() async {
     final db = await database;
-    List<Map<String, dynamic>> maps = await db.query(TABLE_TASK);
+    List<Map<String, dynamic>> maps = await db.query(tableTask);
     if (maps.isEmpty) return [];
     List<TaskModel> result = maps.map((e) => TaskModel.formJson(e)).toList();
     result.sort((a, b) => a.status!.compareTo(b.status!));
@@ -54,13 +54,13 @@ class DatabaseProvider {
   Future<bool> deleteAllTasks() async {
     final db = await database;
     final result =
-        await db.delete(TABLE_TASK);
+        await db.delete(tableTask);
     return result >= 0;
   }
 
   Future<bool> updateTask(TaskModel task) async {
     final db = await database;
-    final result = await db.update(TABLE_TASK, task.toMap(),
+    final result = await db.update(tableTask, task.toMap(),
         where: "id = ?", whereArgs: [task.id]);
     return result >= 0;
   }

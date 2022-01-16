@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_task/bloc/task_bloc_bloc.dart';
-import 'package:todo_task/models/task_model.dart';
+import 'package:todo_task/ui/pages/add_task_page.dart';
 import 'package:todo_task/ui/widgets/list_task.dart';
 
 class HomePage extends StatefulWidget {
@@ -45,8 +45,9 @@ class _HomePageState extends State<HomePage> {
       body: ListTasks(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => {
-          BlocProvider.of<TaskBloc>(context).add(IsLoading()),
-          onAddPress(context)
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return AddTaskPage();
+          })),
         },
         label: Text(
           'Add Task',
@@ -89,15 +90,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-void onAddPress(BuildContext context) async {
-  //Set data to model
-  TaskModel taskModel = TaskModel(
-    title: 'title',
-    description: 'description222',
-    status: 0,
-  );
-
-  BlocProvider.of<TaskBloc>(context).add(AddTask(taskModel));
 }

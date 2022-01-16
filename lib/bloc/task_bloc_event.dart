@@ -26,14 +26,6 @@ class UpdateTask extends TaskEvent {
   List<TaskModel> get props => [task];
 }
 
-class IsLoading extends TaskEvent {
-  const IsLoading();
-
-  @override
-  List<TaskModel> get props => [];
-}
-
-
 class AddTask extends TaskEvent {
   final TaskModel task;
   const AddTask(this.task);

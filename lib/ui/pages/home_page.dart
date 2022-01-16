@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton.icon(
             onPressed: () {
-              BlocProvider.of<TaskBloc>(context).add(DeleteAllTasks());
+              showAlertDialog(context);
             },
             icon: const Icon(
               Icons.save_outlined,
@@ -90,4 +90,45 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text(
+      "Yes",
+      style: TextStyle(color: Colors.greenAccent),
+    ),
+    onPressed: () {
+      BlocProvider.of<TaskBloc>(context).add(DeleteAllTasks());
+      Navigator.of(context).pop();
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text(
+      "No",
+      style: TextStyle(color: Colors.redAccent),
+    ),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Clear Data!"),
+    content: Text("Are you sure to delete all Data?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

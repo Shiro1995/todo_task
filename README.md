@@ -1,6 +1,6 @@
 # Todo task App
 
-This is a simple repository, that helps create to-do tasks. Using MultiBlocProvider to manage state and equatable package to simplify coding style. Save data locally by SQFLite.
+This is a simple repository, that helps manage to-do tasks. Using MultiBlocProvider to manage state and equatable package to simplify coding style. Save data locally by SQFLite.
 
 
 ## How To Use?

@@ -72,7 +72,7 @@ void main() {
       expect(find.byType(ListTasks), findsOneWidget);
     });
   });
-  group('list Task', () {
+  group('ListTask Widget Test', () {
     testWidgets('test list task loaded', (tester) async {
       repository = MockTaskRepository();
       await tester.pumpListTask(repository);

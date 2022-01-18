@@ -23,7 +23,7 @@ void main() {
   final task =
       TaskModel(id: 1, title: 'title', description: 'description', status: 0);
 
-  group('main BLoc', () {
+  group('mainbLoc', () {
     TaskBloc taskBloc;
     late MockTaskRepository repository;
 
@@ -54,7 +54,7 @@ void main() {
       );
 
       blocTest<TaskBloc, TaskState>(
-        'emit data after add task from database',
+        'emit data after delete all tasks database',
         build: () => taskBloc,
         act: (bloc) => bloc.add(DeleteAllTasks()),
         expect: () => <TaskState>[],

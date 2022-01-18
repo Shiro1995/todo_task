@@ -8,9 +8,9 @@ part 'task_bloc_event.dart';
 part 'task_bloc_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final _repository = locator<TaskRepository>();
+  final _repository = TaskRepository();
 
-  TaskBloc()
+  TaskBloc(TaskRepository taskRepository)
       : super(TaskState(statusLoading: LoadingStatus.initial, status: 2)) {
     on<GetAllTask>(_getAllTasks);
     on<AddTask>(_addTask);

@@ -6,10 +6,7 @@ const String dbName = "task_database.db";
 const String tableTask = "task";
 
 class DatabaseProvider {
-  static final DatabaseProvider databaseProvider = DatabaseProvider._();
   Database? _database;
-
-  DatabaseProvider._();
 
   Future<Database> get database async {
     return await openDatabase(

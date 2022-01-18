@@ -1,5 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_task/bloc/task_bloc_bloc.dart';
 import 'package:todo_task/models/task_model.dart';
@@ -12,15 +14,22 @@ class MockTaskBloc extends MockBloc<TaskEvent, TaskState> implements TaskBloc {}
 // ignore: must_be_immutable
 class MockTask extends Mock implements TaskModel {}
 
+@GenerateMocks([MockTaskRepository])
 void main() {
+  final listTask = [
+    TaskModel(id: 1, title: '1', description: 'des', status: 0),
+    TaskModel(id: 1, title: '1', description: 'des', status: 0),
+  ];
   final task =
       TaskModel(id: 1, title: 'title', description: 'description', status: 0);
-  // final List<TaskModel> listTask = [
-  //   TaskModel(id: 1, title: 'title', description: 'description', status: 0)
-  // ];
+
   group('main BLoc', () {
     TaskBloc taskBloc;
+    late MockTaskRepository repository;
 
+    setUp(() {
+      repository = MockTaskRepository();
+    });
     group('blocTask', () {
       taskBloc = MockTaskBloc();
       blocTest<TaskBloc, TaskState>(

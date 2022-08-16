@@ -12,15 +12,6 @@ After cloning the project, get all package flutter by running the command above 
 Then run the program with your simulator or real device. Noticed that all your version of the package need to be the same with **dependencies** below
 
 
-## Testing
-My testing in this project is not functioning as expected because since Dart release the new version. There are many issues with testing, especially with bloc test, you can follow these links:
-
-https://stackoverflow.com/questions/67371802/dart-type-null-is-not-a-subtype-of-type-futurestring-in-mockito
-
-https://github.com/dart-lang/mockito/issues
-
-I will update next time if there is some solution for this.
-
 **Run tests using VSCode**
 
 The Flutter plugins for VSCode support running tests. This is often the best option while writing tests because it provides the fastest feedback loop as well as the ability to set breakpoints
